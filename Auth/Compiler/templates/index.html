@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Code Compiler</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #00ffaa;
+      background-image:
+        radial-gradient(circle, rgba(0,255,153,0.06) 1px, transparent 1px),
+        radial-gradient(circle, rgba(0,255,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+    }
+
+    .editor-panel, .io-panel {
+      flex: 1 1 48%;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .io-panel {
+      justify-content: flex-start;
+      padding-top: 85px;
+      gap: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ffaa;
+      text-shadow: 0 0 8px #00ffaa;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: inline-block;
+      color: #caffd3;
+    }
+
+    select, textarea, .output-box {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #00ffaa;
+      background-color: #000;
+      color: #baffc9;
+      font-family: monospace;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .code-area {
+      flex: 1;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      resize: none;
+      background-color: rgba(0, 20, 10, 0.4);
+      border-radius: 10px;
+      border: 1px solid #00ffaa;
+      box-shadow: 0 0 12px rgba(0, 255, 170, 0.2);
+      color: #baffc9;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .run-button {
+      padding: 12px;
+      font-weight: bold;
+      background-color: #00ffaa;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .run-button:hover {
+      background-color: #00e699;
+    }
+
+    .io-section {
+      padding: 16px;
+      background-color: rgba(0, 20, 10, 0.4);
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 255, 170, 0.2);
+    }
+
+    .output-box {
+      background-color: #081c15;
+      color: #d4f1f4;
+      resize: none;
+    }
+
+    textarea::placeholder {
+      color: #80ffcc;
+    }
+
+    @media (max-width: 768px) {
+      .editor-panel, .io-panel {
+        flex: 1 1 100%;
+        padding-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <form method="post" class="container">
+    {% csrf_token %}
+
+    <!-- Left Panel: Code Editor -->
+    <div class="editor-panel">
+      <h1>Code Compiler</h1>
+
+      <label for="id_language">Select Language:</label>
+      <select name="language" id="id_language" required>
+        <option value="cpp" {% if submission.language == 'cpp' %}selected{% endif %}>C++</option>
+        <option value="py" {% if submission.language == 'py' %}selected{% endif %}>Python</option>
+      </select>
+
+      <label for="id_code" style="margin-top: 20px;">Code Editor:</label>
+      <textarea name="code" id="id_code" class="code-area" placeholder="Write your code here..." required>{% if submission.code %}{{ submission.code }}{% endif %}</textarea>
+
+      <button type="submit" class="run-button">Run Code</button>
+    </div>
+
+    <!-- Right Panel: Input & Output -->
+    <div class="io-panel">
+      <div class="io-section">
+        <label for="id_input_data">Input (stdin):</label>
+        <textarea name="input_data" id="id_input_data" rows="10" placeholder="Enter input data...">{% if submission.input_data %}{{ submission.input_data }}{% endif %}</textarea>
+      </div>
+      <div class="io-section" style="flex-grow: 2;">
+        <label for="output_data">Output:</label>
+        <textarea id="output_data" class="output-box" readonly rows="10">{% if submission.output_data %}{{ submission.output_data }}{% endif %}</textarea>
+      </div>
+    </div>
+
+  </form>
+
+</body>
+</html>
