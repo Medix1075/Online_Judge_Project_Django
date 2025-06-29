@@ -53,7 +53,7 @@ def login_user(request):
         login(request,user)
         messages.info(request,'login successful')
 
-        return redirect('http://localhost:5173/')
+        return redirect('http://127.0.0.1:8000/submit')
     
     template = loader.get_template('login.html')
     context ={}
