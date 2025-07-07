@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ problem.title }}</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5f3eb;
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 32px;
+    }
+
+    .problem-panel, .compiler-panel {
+      background-color: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    h1 {
+      color: #047857;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      color: #0f766e;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    p, pre {
+      margin: 6px 0;
+      white-space: pre-wrap;
+    }
+
+    label {
+      font-weight: 600;
+      color: #0f766e;
+      margin-top: 16px;
+      display: block;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      font-family: monospace;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background-color: #f0fdfa;
+      color: #065f46;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .code-area {
+      height: 400px;
+    }
+
+    .run-button {
+      background-color: #059669;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 10px 18px;
+      margin-top: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .run-button:hover {
+      background-color: #047857;
+    }
+
+    .output-box {
+      background-color: #f0fdfa;
+      border-color: #c4f0e1;
+    }
+
+    .ai-link {
+      display: block;
+      text-align: center;
+      font-weight: bold;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      background: linear-gradient(90deg, #8e44ad, #5c6ac4, #00bcd4);
+      background-size: 200% auto;
+      transition: background-position 0.4s ease;
+      max-width: 250px;
+      margin-top: 16px;
+    }
+
+    .ai-link:hover {
+      background-position: right center;
+    }
+
+    .back-link {
+      margin-top: 24px;
+      display: inline-block;
+      text-decoration: none;
+      color: #0f766e;
+      font-weight: 600;
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .easy { background-color: #065f46; color: #fafbfa; }
+    .medium { background-color: #facc15; color: #fbfaf9; }
+    .hard { background-color: #7f1d1d; color: #f9f9f9; }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    li span {
+      margin-left: 10px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      background-color: #c7f3d0;
+      color: #065f46;
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(15, 23, 42, 0.8);
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      margin: 10% auto;
+      padding: 2rem;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 12px;
+      color: #1e293b;
+      position: relative;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <form method="post" class="container">
+    {% csrf_token %}
+  
+
+    <!-- Problem Panel -->
+    <div class="problem-panel">
+      <h1>{{ problem.title }}</h1>
+      <p class="difficulty-badge {% if problem.difficulty == 'Easy' %}easy{% elif problem.difficulty == 'Medium' %}medium{% elif problem.difficulty == 'Hard' %}hard{% endif %}">
+        {{ problem.difficulty }}
+      </p>
+
+      <h2>Description</h2>
+      <p>{{ problem.description }}</p>
+
+      <h2>Input</h2>
+      <p>{{ problem.Input }}</p>
+
+      <h2>Constraints</h2>
+      <p>{{ problem.constraints }}</p>
+
+      <h2>Output</h2>
+      <p>{{ problem.Output }}</p>
+
+      <h2>Sample Test Cases</h2>
+      {% for case in sample_testcases %}
+        <div class="sample-testcase">
+          <strong>Input:</strong>
+          <pre>{{ case.input_data }}</pre>
+          <strong>Expected Output:</strong>
+          <pre>{{ case.expected_output }}</pre>
+        </div>
+      {% empty %}
+        <p>No sample test cases available.</p>
+      {% endfor %}
+
+      <a href="{% url 'problem_list' %}" class="back-link">← Back to Problem List</a>
+    </div>
+
+    <!-- Compiler Panel -->
+    <div class="compiler-panel">
+      <label for="id_language">Language:</label>
+      <select name="language" id="id_language" required>
+        <option value="cpp" {% if submission.language == 'cpp' %}selected{% endif %}>C++</option>
+        <option value="py" {% if submission.language == 'py' %}selected{% endif %}>Python</option>
+      </select>
+
+      <label for="id_code">Code Editor:</label>
+      <textarea name="code" id="id_code" class="code-area" placeholder="Write your code here..." required>{% if submission.code %}{{ submission.code }}{% endif %}</textarea>
+
+      <label for="id_input_data">Input (stdin):</label>
+      <textarea name="input_data" id="id_input_data" rows="6" placeholder="Enter input data...">{% if submission.input_data %}{{ submission.input_data }}{% endif %}</textarea>
+
+      {% if show_output %}
+        <label for="output_data">Output:</label>
+        <textarea id="output_data" class="output-box" readonly rows="6">{{ submission.output_data }}</textarea>
+      {% endif %}
+
+      {% if show_verdict %}
+        <p><strong>Verdict:</strong> {{ verdict }}</p>
+        {% if test_case_results %}
+          <ul>
+            {% for result in test_case_results %}
+              <li>
+                Test Case {{ result.number }}{% if not result.is_sample %} (Hidden){% endif %}:
+                <span>{{ result.status }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+
+      <button type="submit" name="action" value="run" class="run-button">Run Code</button>
+      <button type="submit" name="action" value="submit" class="run-button">Submit Code</button>
+
+      <label for="ai-task">AI Tool:</label>
+      <select id="ai-task" class="ai-link" style="margin-bottom: 1rem;">
+        <option value="hint">💡 Hint</option>
+        <option value="analysis">🧠 Code Analysis</option>
+      </select>
+
+      <button type="button" onclick="triggerAIReview()" class="ai-link">⚡ Get AI Response</button>
+    </div>
+  </form>
+
+  <!-- Modal -->
+  <div id="aiModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeReviewModal()">&times;</span>
+      <h2 id="modal-title">AI Response</h2>
+      <p id="ai-response-content">Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    function openReviewModal() {
+      document.getElementById("aiModal").style.display = "block";
+    }
+
+    function closeReviewModal() {
+      document.getElementById("aiModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("aiModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    function triggerAIReview() {
+      const task = document.getElementById("ai-task").value;
+      const code = document.getElementById("id_code").value;
+
+      fetch("{% url 'generate_ai_review' problem.pk %}", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          task: task,
+          code: code
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("modal-title").innerText =
+          task === "hint" ? "💡 Hint" : "🧠 Code Analysis";
+        document.getElementById("ai-response-content").innerText = data.review;
+        openReviewModal();
+      })
+      .catch(err => {
+        document.getElementById("ai-response-content").innerText = "❌ Failed to get AI response.";
+        openReviewModal();
+        console.error(err);
+      });
+    }
+  </script>
+
+</body>
+</html>

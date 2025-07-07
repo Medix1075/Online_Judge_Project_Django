@@ -21,5 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("authentication.urls")),
     path("submit/", include("Compiler.urls")),
+    path("home/", include('Problems.urls')),
+    # path("problems/", include("Problems.urls")),
     # path("home/", include("home.urls")),
 ]

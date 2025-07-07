@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.template import loader
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
+from django.urls import reverse
 # Create your views here.
 
 def register_user(request):
@@ -53,7 +54,7 @@ def login_user(request):
         login(request,user)
         messages.info(request,'login successful')
 
-        return redirect('http://127.0.0.1:8000/submit')
+        return redirect('home')
     
     template = loader.get_template('login.html')
     context ={}

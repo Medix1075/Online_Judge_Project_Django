@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 Not Found - Bytewise</title>
+
+  <!-- ✅ Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ Tailwind Config Extension -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            darkbg: '#0a1612',
+            cardbg: '#111827',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .btn {
+      padding: 12px 24px;
+      margin: 5px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn-home {
+      background-color: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+
+    .btn-home:hover {
+      background-color: #059669;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: 2px solid #10b981;
+      color: #10b981;
+    }
+
+    .btn-back:hover {
+      background-color: #064e3b;
+      color: white;
+    }
+
+    .bg-stripe {
+      background-image: repeating-linear-gradient(
+        135deg,
+        #0f3d27 0px,
+        #0f3d27 40px,
+        #157c52 40px,
+        #157c52 80px,
+        #3dd68c 80px,
+        #3dd68c 120px,
+        #e0ffe0 120px,
+        #e0ffe0 160px
+      );
+      background-size: 200% 200%;
+    }
+
+    @keyframes stripeMove {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+
+    .animate-stripeMove {
+      animation: stripeMove 25s linear infinite;
+    }
+  </style>
+</head>
+
+<body class="bg-stripe animate-stripeMove min-h-screen flex items-center justify-center relative text-white">
+
+  <!-- Black overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-60 z-0"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 text-center p-6">
+    <h1 class="text-6xl font-bold text-emerald-400 mb-4">404</h1>
+    <p class="text-lg max-w-xl mb-8 text-slate-200">
+      Oops! The page you're looking for doesn't exist.<br>
+      It may have been moved, deleted, or never existed.
+    </p>
+
+    <div>
+      <a href="/home/" class="btn btn-home">🏠 Go to Homepage</a>
+      <button class="btn btn-back" onclick="history.back()">⬅️ Go Back</button>
+    </div>
+  </div>
+
+</body>
+</html>

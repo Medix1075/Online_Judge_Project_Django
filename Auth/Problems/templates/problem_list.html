@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Problem List</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f3eb; /* Cream background */
+      color: #1f2937;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      color: #047857;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+
+    .controls input[type="text"],
+    .controls select {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background-color: #ffffff;
+      color: #1f2937;
+      width: 100%;
+      max-width: 400px;
+      font-size: 1rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    li {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+      padding: 1rem 1.5rem;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .problem-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .problem-info a {
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .problem-info a:hover {
+      color: #059669;
+    }
+
+    .problem-info small {
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    .difficulty-badge {
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .easy {
+      background-color: #bbf7d0;
+      color: #065f46;
+    }
+
+    .medium {
+      background-color: #facc15;
+      color: #78350f;
+    }
+
+    .hard {
+      background-color: #f87171;
+      color: #7f1d1d;
+    }
+
+    .add-link {
+      display: block;
+      margin: 3rem auto 0;
+      text-align: center;
+      font-weight: bold;
+      color: #ffffff;
+      background: #059669;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      max-width: 250px;
+    }
+
+    .add-link:hover {
+      background: #047857;
+    }
+
+    @media (max-width: 600px) {
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .difficulty-badge {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>🔥 Problem List</h1>
+
+  <!-- Controls -->
+  <div class="controls">
+    <input type="text" placeholder="Search problems..." />
+    <label for="tag-filter" class="sr-only">Filter problems by tag</label>
+    <select>
+      <option value="">Filter by tag</option>
+      <option value="dp">Dynamic Programming</option>
+      <option value="graphs">Graphs</option>
+      <option value="greedy">Greedy</option>
+      <option value="math">Math</option>
+      <!-- Add more tags as needed -->
+    </select>
+  </div>
+
+  <ul>
+    {% for problem in problems %}
+      <li>
+        <div class="problem-info">
+          <a href="{% url 'problem_details' problem.pk %}">
+            {{ problem.title }}
+          </a>
+          <small>Tags: {{ problem.tags.all|join:", " }}</small>
+        </div>
+        <span class="difficulty-badge {% if problem.difficulty == 'Easy' %}easy{% elif problem.difficulty == 'Medium' %}medium{% elif problem.difficulty == 'Hard' %}hard{% endif %}">
+          {{ problem.difficulty }}
+        </span>
+      </li>
+    {% empty %}
+      <li>No problems available.</li>
+    {% endfor %}
+  </ul>
+
+  <a class="add-link" href="{% url 'problem_form' %}">➕ Add New Problem</a>
+  
+</body>
+</html>

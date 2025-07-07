@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,16 +7,51 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
 
   <style>
+    :root {
+      --bg-color: #0d1f1a;
+      --text-color: #e0ffe0;
+      --card-bg: #10251f;
+      --card-border: #1c3f34;
+      --btn-bg: #34d399;
+      --btn-hover: #26b284;
+      --input-bg: #f4f4f4;
+      --input-text: #0d1f1a;
+      --placeholder: #6b9080;
+      --label-color: #bbf7d0;
+      --link-color: #34d399;
+      --link-hover: #a7f3d0;
+      --alert-bg: #def7ec;
+      --alert-text: #065f46;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #f4f4f4;
+      --text-color: #0d1f1a;
+      --card-bg: #ffffff;
+      --card-border: #ccc;
+      --btn-bg: #10b981;
+      --btn-hover: #0f766e;
+      --input-bg: #ffffff;
+      --input-text: #0d1f1a;
+      --placeholder: #6b7280;
+      --label-color: #047857;
+      --link-color: #047857;
+      --link-hover: #065f46;
+      --alert-bg: #d1fae5;
+      --alert-text: #064e3b;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #000000;
-      color: #00ffaa;
+      background: var(--bg-color);
+      color: var(--text-color);
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
     }
 
     canvas.matrix {
@@ -32,71 +67,109 @@
     .container {
       position: relative;
       z-index: 1;
+      width: 100%;
+      /* max-width: 700px;     Increased container max width */
+      padding: 20px;      /* Ensures spacing on small screens */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
     }
 
     .card {
-      background-color: #0c0c0c !important;
-      color: #baffc9;
-      box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
+      background-color: var(--card-bg) !important;
+      color: var(--text-color);
+      box-shadow: 0 0 15px rgba(0, 80, 40, 0.25);
       border-radius: 10px;
-      max-width: 500px;
+      max-width: 600px;
       width: 100%;
+      border: 1px solid var(--card-border);
+      padding: 30px 25px;       /* Extra internal space */
+      box-sizing: border-box;
     }
 
     h1 span {
-      color: #00ffaa;
-      text-shadow: 0 0 8px #00ffaa;
+      color: var(--btn-bg);
+      text-shadow: 0 0 2px rgba(0, 128, 64, 0.2);
     }
 
     a {
-      color: #00ffaa;
+      color: var(--link-color);
       transition: color 0.2s;
     }
 
     a:hover {
-      color: #80ffcc;
+      color: var(--link-hover);
     }
 
     .btn-primary {
-      background-color: #00ffaa;
+      background-color: var(--btn-bg);
       border: none;
       font-weight: bold;
+      color: var(--input-text);
     }
 
     .btn-primary:hover {
-      background-color: #00e699;
+      background-color: var(--btn-hover);
     }
 
     input.form-control {
-      background-color: #000000;
-      color: #baffc9;
-      border: 1px solid #00ff99;
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      border: 1px solid var(--btn-bg);
     }
 
     input.form-control::placeholder {
-      color: #80ffcc;
+      color: var(--placeholder);
     }
 
     label {
       font-weight: 600;
-      color: #caffd3;
+      color: var(--label-color);
+    }
+
+    .alert {
+      background-color: var(--alert-bg);
+      color: var(--alert-text);
+      border: 1px solid var(--btn-bg);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 2;
+      background: var(--btn-bg);
+      border: none;
+      color: var(--input-text);
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover {
+      background: var(--btn-hover);
     }
   </style>
 </head>
 <body>
+  <!-- Theme Toggle Button -->
+  <!-- <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button> -->
+
   <!-- Matrix Background -->
   <canvas class="matrix"></canvas>
 
   <!-- Centered Login Form -->
   <div class="container">
-    <form class="card p-4 shadow-lg" method="post" enctype="multipart/form-data">
+    <form class="card p-4 shadow-sm" method="post" enctype="multipart/form-data">
       <h1 class="text-center"><span>Online Judge</span></h1>
       {% csrf_token %}
       <h3>Login</h3>
       <hr />
 
       {% if messages %}
-      <div class="alert alert-primary" role="alert">
+      <div class="alert alert-success" role="alert">
         {% for message in messages %} {{ message }} {% endfor %}
       </div>
       {% endif %}
@@ -116,24 +189,31 @@
     </form>
   </div>
 
-  <!-- Matrix animation script -->
+  <!-- Matrix Animation Script -->
   <script>
     const canvas = document.querySelector(".matrix");
     const ctx = canvas.getContext("2d");
-
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
-    const binary = "01";
+    const binary = "10";
     const fontSize = 16;
     const columns = canvas.width / fontSize;
     const drops = Array.from({ length: columns }).fill(1);
 
+    function getTheme() {
+      return document.documentElement.getAttribute("data-theme") || "dark";
+    }
+
     function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      // const theme = getTheme();
+      const bgColor = "rgba(255,255,255,0.06)";
+      const matrixColor = "#047857";
+
+      ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#00ff99";
+      ctx.fillStyle = matrixColor;
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
@@ -154,5 +234,23 @@
       canvas.width = window.innerWidth;
     });
   </script>
+
+  <!-- Theme Persistence and Toggle -->
+  <!-- <script>
+    function toggleTheme() {
+      const currentTheme = localStorage.getItem("theme") || "dark";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    }
+
+    // On load
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    });
+  </script> -->
 </body>
 </html>
+
+<!-- matrix 1 0 animation be the one with light theme and login box dark and no toggle switch -->

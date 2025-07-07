@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bytewise - Home</title>
+
+  <!-- ✅ Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ Optional custom Tailwind config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            darkbg: '#0a1612',
+            cardbg: '#111827',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .bg-stripe {
+      background-image: repeating-linear-gradient(
+        135deg,
+        #0f3d27 0px,
+        #0f3d27 40px,
+        #157c52 40px,
+        #157c52 80px,
+        #3dd68c 80px,
+        #3dd68c 120px,
+        #e0ffe0 120px,
+        #e0ffe0 160px
+      );
+      background-size: 200% 200%;
+    }
+
+    @keyframes stripeMove {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+
+    .animate-stripeMove {
+      animation: stripeMove 25s linear infinite;
+    }
+  </style>
+</head>
+
+<body class="bg-[#0a1612] text-white">
+
+  {% include "navbar.html" %}
+
+  <!-- 🔹 Hero Section -->
+  <section class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+    <div class="absolute inset-0 z-0 animate-stripeMove bg-stripe"></div>
+    <div class="absolute inset-0 bg-black opacity-60 z-0"></div>
+
+    <div class="z-10 max-w-2xl px-4">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4 text-white drop-shadow-xl">
+        Welcome to <span class="text-emerald-400">Bytewise</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-200 mb-8">
+        Solve, compete, and level up your coding skills with curated problems.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a href="{% url 'problem_list' %}">
+          <button class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg">
+            Get Started
+          </button>
+        </a>
+        <a href="#">
+          <button class="border border-emerald-500 text-emerald-400 px-6 py-3 rounded-full font-semibold hover:bg-emerald-500 hover:text-white transition">
+            Leaderboard
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <div class="absolute top-0 left-0 w-full h-14 bg-gradient-to-t from-transparent to-[#0a1612] z-[1]"></div>
+    <div class="absolute bottom-0 left-0 w-full h-14 bg-gradient-to-b from-transparent to-[#0a1612] z-[1]"></div>
+  </section>
+
+  <!-- 🔹 Featured Problems Section -->
+  <section class="py-20 px-4 text-white bg-[#0a1612]">
+    <h2 class="text-4xl font-extrabold text-emerald-400 text-center mb-12">
+      🔥 Featured Problems
+    </h2>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for p in problems %}
+        <div class="bg-[#111827] rounded-xl p-6 text-center shadow-md hover:shadow-lg transition-all">
+          <h3 class="text-xl font-bold mb-2">{{ p.title }}</h3>
+          <div class="flex justify-center items-center gap-2 mb-4">
+            <span class="text-sm px-3 py-1 rounded-full 
+              {% if p.difficulty == 'Easy' %} bg-green-500
+              {% elif p.difficulty == 'Medium' %} bg-yellow-500
+              {% elif p.difficulty == 'Hard' %} bg-red-500
+              {% else %} bg-gray-500 {% endif %}
+              text-white">
+              {{ p.difficulty }}
+            </span>
+            <span class="text-gray-300 text-sm">
+              Success: 85%
+            </span>
+          </div>
+          <a href="{% url 'problem_details' p.id %}">
+            <button class="mt-2 w-full py-2 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold">
+              Solve Now
+            </button>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+</body>
+</html>
