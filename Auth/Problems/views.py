@@ -51,10 +51,10 @@ def problem_detail(request, pk):
     sample_testcases = TestCase.objects.filter(problem=problem, is_sample=True)
     all_testcases = TestCase.objects.filter(problem=problem)  # includes hidden testcases
 
-    if not problem.ai_review:
+    if not problem.ai_review and request.method != "POST":
         review_response = generate_ai_review(request, pk)
         if isinstance(review_response, JsonResponse):
-            problem.ai_review = json.loads(review_response.content).get("review")
+            problem.ai_review = generate_hint(problem)
             problem.save()
             
     submission = None

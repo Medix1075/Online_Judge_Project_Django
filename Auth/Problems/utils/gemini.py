@@ -1,8 +1,13 @@
 import google.generativeai as genai
-from django.conf import settings
+# from django.conf import settings
+from decouple import config
 
 # Configure the Gemini API key
-genai.configure(api_key=settings.GEMINI_API_KEY)
+import os
+print("ENV VAR DEBUG:", os.path.exists('.env'))
+print("GEMINI_API_KEY:", config("GEMINI_API_KEY", default="Not Found"))
+GEMINI_API_KEY = config("GEMINI_API_KEY")
+genai.configure(api_key=GEMINI_API_KEY)
 
 
 def generate_hint(problem):

@@ -11,7 +11,7 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #f5f3eb; /* Cream background */
+      background-color: #f5f3eb;
       color: #1f2937;
       min-height: 100vh;
       padding: 2rem;
@@ -152,21 +152,20 @@
 
   <!-- Controls -->
   <div class="controls">
-    <input type="text" placeholder="Search problems..." />
-    <label for="tag-filter" class="sr-only">Filter problems by tag</label>
+    <input type="text" id="searchInput" placeholder="Search problems..." />
+    <!-- <label for="tag-filter" class="sr-only">Filter problems by tag</label>
     <select>
       <option value="">Filter by tag</option>
       <option value="dp">Dynamic Programming</option>
       <option value="graphs">Graphs</option>
       <option value="greedy">Greedy</option>
       <option value="math">Math</option>
-      <!-- Add more tags as needed -->
-    </select>
+    </select> -->
   </div>
 
   <ul>
     {% for problem in problems %}
-      <li>
+      <li class="problem-item">
         <div class="problem-info">
           <a href="{% url 'problem_details' problem.pk %}">
             {{ problem.title }}
@@ -183,6 +182,21 @@
   </ul>
 
   <a class="add-link" href="{% url 'problem_form' %}">➕ Add New Problem</a>
+
+  <!-- JavaScript Search Functionality -->
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const problemItems = document.querySelectorAll(".problem-item");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+
+      problemItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? "" : "none";
+      });
+    });
+  </script>
   
 </body>
 </html>
