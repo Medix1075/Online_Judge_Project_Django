@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ problem.title }}</title>
@@ -132,9 +133,20 @@
       margin-bottom: 12px;
     }
 
-    .easy { background-color: #065f46; color: #fafbfa; }
-    .medium { background-color: #facc15; color: #fbfaf9; }
-    .hard { background-color: #7f1d1d; color: #f9f9f9; }
+    .easy {
+      background-color: #bbf7d0;
+      color: #065f46;
+    }
+
+    .medium {
+      background-color: #facc15;
+      color: #78350f;
+    }
+
+    .hard {
+      background-color: #f87171;
+      color: #7f1d1d;
+    }
 
     ul {
       padding-left: 20px;
@@ -205,7 +217,7 @@
 </head>
 
 <body>
-  
+
   <form method="post" class="container">
     {% csrf_token %}
   
@@ -256,7 +268,7 @@
       <textarea name="code" id="id_code" class="code-area" placeholder="Write your code here..." required>{% if submission.code %}{{ submission.code }}{% endif %}</textarea>
 
       <label for="id_input_data">Input (stdin):</label>
-      <textarea name="input_data" id="id_input_data" rows="6" placeholder="Enter input data...">{% if submission.input_data %}{{ submission.input_data }}{% endif %}</textarea>
+      <textarea name="input_data" id="id_input_data" rows="6" >{% if submission.input_data %}{{ submission.input_data }}{% endif %}</textarea>
 
       {% if show_output %}
         <label for="output_data">Output:</label>
@@ -343,6 +355,11 @@
         console.error(err);
       });
     }
+  </script>
+
+  <script>
+    document.getElementById("id_input_data").placeholder =
+                    "Enter input data...\n(Input necessary for running the code)";
   </script>
 
 </body>
