@@ -31,7 +31,7 @@ The system is deployed on **AWS EC2** with a production-grade frontend using **T
 - 👤 User Authentication & Submission History
 - 🧠 AI-Powered Code Review (via Gemini)
 - ⚙️ Real-Time Code Execution in Isolated Docker Containers
-- 📊 Scalable Execution Engine (Handles 1200+ concurrent runs)
+- 📊 Scalable Execution Engine 
 - 🌐 Lightweight Web Interface with Tailwind CSS
 - 📁 Admin Panel for Problem Management
 - 📄 Code Hinting with AST & Semantic Match
