@@ -2,7 +2,7 @@
 
 A scalable, full-stack online judge platform designed for real-time evaluation of user-submitted code, enhanced with AI-powered feedback and robust deployment.
 
-🌐 [Live Demo](http://13.60.72.253/home/) | 🎥 [Video Walkthrough](https://www.loom.com/share/6286f60e130a4b87a61643fcb18bebc0?sid=9a051ceb-e91d-42e1-ad30-c880720333a6)
+🌐 [Live Demo](http://13.60.72.253/home/) (Refresh it for the first time)| 🎥 [Video Walkthrough](https://www.loom.com/share/6286f60e130a4b87a61643fcb18bebc0?sid=9a051ceb-e91d-42e1-ad30-c880720333a6)
 
 ---
 
