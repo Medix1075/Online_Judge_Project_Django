@@ -28,7 +28,7 @@ The system is deployed on **AWS EC2** with a production-grade frontend using **T
 
 ## 🔑 Features
 
-- 👤 User Authentication & Submission History
+- 👤 User Authentication 
 - 🧠 AI-Powered Code Review (via Gemini)
 - ⚙️ Real-Time Code Execution in Isolated Docker Containers
 - 📊 Scalable Execution Engine 
