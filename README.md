@@ -12,7 +12,7 @@ Built a scalable online judge using **Django** and **Docker**, enabling secure e
 
 Integrated **Google Gemini API** for real-time AST-level code analysis and semantic embedding comparison, enabling token-wise feedback generation with a decent match accuracy in conceptual hinting benchmarks.
 
-The system is deployed on **AWS EC2** with a production-grade frontend using **Tailwind CSS**, resulting in a secure and responsive user experience. Developed under mentorship from engineers at **Google, Apple, ByteDance**, and **Alphagrep Singapore**.
+The system is deployed on **AWS EC2** with a production-grade frontend using **Tailwind CSS**, resulting in a secure and responsive user experience.
 
 ---
 
@@ -20,8 +20,8 @@ The system is deployed on **AWS EC2** with a production-grade frontend using **T
 
 - **Backend:** Django, Docker, SQLite
 - **Frontend:** Tailwind CSS, HTMX
-- **AI Integration:** Google Gemini API (AST + embeddings)
-- **Deployment:** AWS EC2 (Ubuntu)
+- **AI Integration:** Google Gemini API 
+- **Deployment:** AWS EC2 
 - **Containerization:** Docker (secure code sandboxing)
 
 ---
